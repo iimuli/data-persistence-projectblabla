@@ -11,17 +11,24 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScoreText;
+    public Text PlayerNameText;
     public GameObject GameOverText;
+    public GameObject GameStartText;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
 
-    
-    // Start is called before the first frame update
+    public Button returnButton;
+    [SerializeField] public static int highScore;
+    [SerializeField] public static string highScoreName;
+
     void Start()
     {
+        BestScoreText.text = "Best Score: " + highScoreName + ": " + highScore;
+        PlayerNameText.text = MenuManager.playerName;
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -38,6 +45,8 @@ public class MainManager : MonoBehaviour
         }
     }
 
+
+
     private void Update()
     {
         if (!m_Started)
@@ -45,6 +54,8 @@ public class MainManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 m_Started = true;
+                returnButton.gameObject.SetActive(false);
+                GameStartText.SetActive(false);
                 float randomDirection = Random.Range(-1.0f, 1.0f);
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
@@ -55,10 +66,18 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+            BestScoreText.text = "Best Score: " + highScoreName + ": " + highScore;
+            if (m_Points > highScore)
+            {
+                highScore = m_Points;
+                highScoreName = MenuManager.playerName;
+            }
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
+
+            returnButton.gameObject.SetActive(true);
         }
     }
 
@@ -72,5 +91,13 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+    }
+
+    public void ReturnButton()
+    {
+        PlayerPrefs.SetString("Player Name", highScoreName);
+        PlayerPrefs.SetInt("High Score", highScore);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene(0);
     }
 }
