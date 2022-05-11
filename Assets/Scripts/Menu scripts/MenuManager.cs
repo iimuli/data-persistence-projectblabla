@@ -25,9 +25,18 @@ public class MenuManager : MonoBehaviour
     {    
         SceneManager.LoadScene(1);
     }
+
+    public void ResetScore() 
+    {
+        PlayerPrefs.SetString("Player Name", null);
+        PlayerPrefs.SetInt("High Score", 0);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
     public void Start()
     {        
         inputField.onEndEdit.AddListener(delegate { inputValue(inputField); });
+        inputField.characterLimit = 6;
     }
 
     public void inputValue(InputField userInput)

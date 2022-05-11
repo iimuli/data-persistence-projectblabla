@@ -28,7 +28,7 @@ public class MainManager : MonoBehaviour
     void Start()
     {
         BestScoreText.text = "Best Score: " + highScoreName + ": " + highScore;
-        PlayerNameText.text = MenuManager.playerName;
+        PlayerNameText.text = "Current player: " + MenuManager.playerName;
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
