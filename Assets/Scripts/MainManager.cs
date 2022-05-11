@@ -22,8 +22,8 @@ public class MainManager : MonoBehaviour
     private bool m_GameOver = false;
 
     public Button returnButton;
-    [SerializeField] public static int highScore;
-    [SerializeField] public static string highScoreName;
+    public static int highScore;
+    public static string highScoreName;
 
     void Start()
     {
